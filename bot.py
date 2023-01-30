@@ -24,7 +24,7 @@ with sync_playwright() as p:  # Sync version of Playwright
 
     # Fill in the text field with the question 
     text_field = page.querySelector('.src > .false.content')
-	text_field.click()
+    text_field.click()
     text_field.fill(question)
 
     # Click on translate button 
@@ -35,7 +35,7 @@ with sync_playwright() as p:  # Sync version of Playwright
 	
     # Fill in the text field with the correct_answer 
     text_field2 = page.querySelector('.src > .false.content')
-	text_field2.click()
+    text_field2.click()
     text_field2.fill(correct_answer)
 
     # Click on translate button 
