@@ -31,7 +31,7 @@ with sync_playwright() as p:  # Sync version of Playwright
     translate_button = page.querySelector('[src="./img/icon/copy.png"]')
     translate_button.click()
 	
-	translated_question = await page.evaluate(() => { return navigator.clipboard.readText(); })
+    translated_question = await page.evaluate(() => { return navigator.clipboard.readText(); })
 	
     # Fill in the text field with the correct_answer 
     text_field2 = page.querySelector('.src > .false.content')
@@ -42,7 +42,7 @@ with sync_playwright() as p:  # Sync version of Playwright
     translate_button2 = page.querySelector('[src="./img/icon/copy.png"]')
     translate_button2.click()
 	
-	translated_correct_answer = await page.evaluate(() => { return navigator.clipboard.readText(); })
+    translated_correct_answer = await page.evaluate(() => { return navigator.clipboard.readText(); })
 	
 # Create a Playwright browser instance and open Twitter page 
 
