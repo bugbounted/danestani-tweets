@@ -5,39 +5,40 @@ import requests
 import json
 import os
 
-# Get question and correct answer from OpenTDB API 
-url = 'https://opentdb.com/api.php?amount=1&type=multiple' 
-response = requests.get(url) 
-data = json.loads(response.text) 
-question = data['results'][0]['question'] 
-correct_answer = data['results'][0]['correct_answer'] 
+# Get the question and correct answer from OpenTDB API
+amount = 1
+type = 'multiple'
+url = f'https://opentdb.com/api.php?amount={amount}&type={type}'
+response = requests.get(url).json()
+question = response['results'][0]['question']
+correct_answer = response['results'][0]['correct_answer']
 
 # Translate variables to Persian language using Playwright 
-with playwright.chromium.connect() as browser: 
-    page = await browser.newPage() 
+with sync_playwright() as p:  # Sync version of Playwright 
 
-    await page.goto('https://translate.google.com/')
+    browser = p.chromium.launch()  # Launch Chromium browser 
 
-    await page.fill('input[name="text"]', question)
+    page = browser.newPage()  # Create new page in the browser 
 
-    await page.selectOption('select[name="sl"]', 'en')
+    page.goto('https://translate.google.com/')  # Go to Google Translate page
 
-    await page.selectOption('select[name="tl"]', 'fa')
+    # Fill in the source language and target language fields with English and Persian respectively  
+    page.fill('#sugg-item-en', 'English')  
+    page.fill('#sugg-item-fa', 'Persian')
 
-    await page.click('input[type="submit"]')
+    # Fill in the text field with the question and click on translate button  
+    page.fill('textarea[id="source"]', question)  
+    page.click('#gt-submit')
 
-    translated_question = await page.$eval('span#result_box', el => el.innerText)
+    # Wait for translation to be completed and get translated text from result box  
+    translated_question = page.waitForSelector('span[id="result_box"]').innerText
 
-    # Translate correct answer to Persian language using Playwright 
-    await page.fill('input[name="text"]', correct_answer)
+    # Fill in the text field with the correct answer and click on translate button  
+    page.fill('textarea[id="source"]', correct_answer)  
+    page.click('#gt-submit')
 
-    await page.selectOption('select[name="sl"]', 'en')
-
-    await page.selectOption('select[name="tl"]', 'fa')
-
-    await page.click('input[type="submit"]')
-
-    translated_correct_answer = await page.$eval('span#result_box', el => el.innerText)  
+    # Wait for translation to be completed and get translated text from result box  
+    translated_correct_answer = page.waitForSelector('span[id="result_box"]').innerText
 	
 # Create a Playwright browser instance and open Twitter page 
 
