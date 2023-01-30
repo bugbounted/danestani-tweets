@@ -1,0 +1,23 @@
+{
+    "name": "danestani-tweets",
+    "description": "tweet persian translated questions with correct answer in twitter",
+    "repository": "https://github.com/bugbounted/danestani-tweets",
+    "stack": "container",
+    "env": {
+      "TWITTER_USERNAME": {
+        "description": "your twitter username or email",
+        "value": "",
+        "required": true
+      },
+      "TWITTER_PASSWORD": {
+        "description": "your twitter password",
+        "value": "",
+        "required": true
+      }
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "basic"
+        }
+    }
+}
