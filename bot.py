@@ -18,7 +18,7 @@ with sync_playwright() as p:  # Sync version of Playwright
 
     browser = p.chromium.launch()  # Launch Chromium browser 
 
-    page = browser.newPage()  # Create new page in the browser 
+    page = browser.new_page()  # Create new page in the browser 
 
     page.goto('https://translate.google.com/')  # Go to Google Translate page
 
