@@ -20,25 +20,29 @@ with sync_playwright() as p:  # Sync version of Playwright
 
     page = browser.new_page()  # Create new page in the browser 
 
-    page.goto('https://translate.google.com/')  # Go to Google Translate page
+    page.goto('https://targoman.ir/')
 
-    # Fill in the source language and target language fields with English and Persian respectively  
-    page.fill('#sugg-item-en', 'English')  
-    page.fill('#sugg-item-fa', 'Persian')
+    # Fill in the text field with the question 
+    text_field = page.querySelector('.src > .false.content')
+	text_field.click()
+    text_field.fill(question)
 
-    # Fill in the text field with the question and click on translate button  
-    page.fill('textarea[id="source"]', question)  
-    page.click('#gt-submit')
+    # Click on translate button 
+    translate_button = page.querySelector('[src="./img/icon/copy.png"]')
+    translate_button.click()
+	
+	translated_question = await page.evaluate(() => { return navigator.clipboard.readText(); })
+	
+    # Fill in the text field with the correct_answer 
+    text_field2 = page.querySelector('.src > .false.content')
+	text_field2.click()
+    text_field2.fill(correct_answer)
 
-    # Wait for translation to be completed and get translated text from result box  
-    translated_question = page.waitForSelector('span[id="result_box"]').innerText
-
-    # Fill in the text field with the correct answer and click on translate button  
-    page.fill('textarea[id="source"]', correct_answer)  
-    page.click('#gt-submit')
-
-    # Wait for translation to be completed and get translated text from result box  
-    translated_correct_answer = page.waitForSelector('span[id="result_box"]').innerText
+    # Click on translate button 
+    translate_button2 = page.querySelector('[src="./img/icon/copy.png"]')
+    translate_button2.click()
+	
+	translated_correct_answer = await page.evaluate(() => { return navigator.clipboard.readText(); })
 	
 # Create a Playwright browser instance and open Twitter page 
 
